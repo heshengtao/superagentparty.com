@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>heshengtao · 开源 AI 智能体作品集 | Super Agent Party</title>
+<meta name="description" content="heshengtao 的开源作品集：Super Agent Party 全能 AI 伴侣（2.7K★）、ComfyUI LLM Party 智能体工作流（2.4K★）、Exameow AI 出题与 LabelAll 数据标注。30 个仓库，5,243 星标。">
+<meta name="author" content="heshengtao">
+<meta name="theme-color" content="#05060a">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://superagentparty.com/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="superagentparty.com">
+<meta property="og:title" content="heshengtao · 开源 AI 智能体作品集">
+<meta property="og:description" content="从自托管的 AI 伴侣，到 ComfyUI 里的智能体工作流。30 个开源仓库，5,243 星标。">
+<meta property="og:url" content="https://superagentparty.com/">
+<meta property="og:image" content="https://superagentparty.com/assets/img/sap-cover-en.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="heshengtao · 开源 AI 智能体作品集">
+<meta name="twitter:description" content="从自托管的 AI 伴侣，到 ComfyUI 里的智能体工作流。30 个开源仓库，5,243 星标。">
+<meta name="twitter:image" content="https://superagentparty.com/assets/img/sap-cover-en.webp">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="/css/style.css?v=1">
+
+<script src="/js/lang-boot.js?v=1"></script>
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "heshengtao",
+  "url": "https://superagentparty.com/",
+  "sameAs": ["https://github.com/heshengtao"],
+  "knowsAbout": ["AI agents", "Large language models", "ComfyUI", "Tauri", "Rust", "Vue"]
+}
+</script>
+</head>
+<body>
+
+<div class="bg" aria-hidden="true">
+  <div class="bg__grid"></div>
+  <div class="bg__stars"></div>
+</div>
+<canvas id="starfield" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<div class="frame" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+<div class="progress" aria-hidden="true"></div>
+
+<a class="skip-link" href="#main" data-i18n="a11y.skip">跳到主要内容</a>
+
+<header class="nav">
+  <div class="shell nav__inner">
+    <a class="brand" href="/" aria-label="superagentparty.com">
+      <img class="brand__mark" src="/assets/favicon.svg" alt="" width="30" height="30" aria-hidden="true">
+      <span class="brand__text">heshengtao<small data-i18n="hero.alias">HESHENGTAO / PORTFOLIO</small></span>
+    </a>
+
+    <nav class="nav__links" aria-label="Navigation" data-i18n-aria="nav.menu">
+      <a class="nav__link" href="#projects" data-section="projects" data-i18n="nav.projects">项目</a>
+      <a class="nav__link" href="#ecosystem" data-section="ecosystem" data-i18n="nav.ecosystem">生态</a>
+      <a class="nav__link" href="#about" data-section="about" data-i18n="nav.about">关于</a>
+    </nav>
+
+    <div class="nav__tail">
+      <span class="lang" role="group" aria-label="Language">
+        <button type="button" class="lang__btn" data-lang-btn="zh">中</button>
+        <button type="button" class="lang__btn" data-lang-btn="en">EN</button>
+      </span>
+      <a class="icon-btn" href="https://github.com/heshengtao" target="_blank" rel="noopener noreferrer"
+         data-i18n-aria="nav.github" aria-label="View heshengtao on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49v-1.7c-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.93.85.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.11-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.35 9.35 0 015 0c1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.06 10.06 0 0022 12.25C22 6.58 17.52 2 12 2z"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="page" id="main">
+
+  <!-- ======================= hero ======================= -->
+  <section class="hero">
+    <div class="shell">
+      <div class="hero__grid">
+        <div>
+          <p class="eyebrow reveal" data-i18n="hero.eyebrow">开源 · AI 智能体</p>
+          <h1 class="hero__title reveal" style="--d:60ms"><span class="grad-text">heshengtao</span></h1>
+          <p class="hero__alias reveal" style="--d:90ms">SUPER AGENT PARTY · COMFYUI LLM PARTY · EXAMEOW · LABELALL</p>
+          <h2 class="hero__headline reveal" style="--d:130ms" data-i18n="hero.headline">构建开源 AI 智能体生态</h2>
+          <p class="hero__lead reveal" style="--d:170ms" data-i18n="hero.lead">从可自托管的 AI 伴侣，到 ComfyUI 里的智能体工作流；从 AI 出题工具，到数据集标注。四年间开源 30 个仓库，让每个人都能拥有自己的 AI。</p>
+
+          <div class="hero__actions reveal" style="--d:210ms">
+            <a class="btn btn--primary" href="#projects">
+              <span data-i18n="hero.cta.projects">浏览作品</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn btn--ghost" href="https://github.com/heshengtao" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49v-1.7c-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.93.85.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.11-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.35 9.35 0 015 0c1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.06 10.06 0 0022 12.25C22 6.58 17.52 2 12 2z"/></svg>
+              <span data-i18n="hero.cta.github">GitHub 主页</span>
+            </a>
+          </div>
+
+          <div class="hero__stats reveal" style="--d:250ms">
+            <div class="stat">
+              <div class="stat__value"><span data-count="5243">5,243</span></div>
+              <div class="stat__label" data-i18n="hero.stat.stars">累计星标</div>
+            </div>
+            <div class="stat">
+              <div class="stat__value"><span data-count="30">30</span></div>
+              <div class="stat__label" data-i18n="hero.stat.repos">开源仓库</div>
+            </div>
+            <div class="stat">
+              <div class="stat__value"><span data-count="524">524</span></div>
+              <div class="stat__label" data-i18n="hero.stat.forks">累计分支</div>
+            </div>
+            <div class="stat">
+              <div class="stat__value"><span data-count="2">2</span></div>
+              <div class="stat__label" data-i18n="hero.stat.flagship">旗舰项目</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="telemetry hud hud--ticks" aria-hidden="true">
+          <div class="telemetry__head">
+            <span data-i18n="tel.title">遥测</span>
+            <span><span class="dot"></span> <span data-i18n="tel.status">运行正常</span></span>
+          </div>
+          <div class="telemetry__rows">
+            <div class="telemetry__row"><span data-i18n="tel.k.node">节点</span><b>heshengtao</b></div>
+            <div class="telemetry__row"><span data-i18n="hero.stat.repos">开源仓库</span><b>30</b></div>
+            <div class="telemetry__row"><span data-i18n="hero.stat.stars">累计星标</span><b>5,243</b></div>
+            <div class="telemetry__row"><span data-i18n="hero.stat.forks">累计分支</span><b>524</b></div>
+            <div class="telemetry__row"><span data-i18n="tel.k.since">始于</span><b>2024</b></div>
+          </div>
+          <div class="bars">
+            <div class="bar">
+              <span class="bar__meta"><b>Super Agent Party</b><span>2,712</span></span>
+              <span class="bar__track"><span class="bar__fill" style="width:100%"></span></span>
+            </div>
+            <div class="bar">
+              <span class="bar__meta"><b>ComfyUI LLM Party</b><span>2,370</span></span>
+              <span class="bar__track"><span class="bar__fill" style="width:87%"></span></span>
+            </div>
+            <div class="bar">
+              <span class="bar__meta"><b>Exameow</b><span>55</span></span>
+              <span class="bar__track"><span class="bar__fill" style="width:2%"></span></span>
+            </div>
+            <div class="bar">
+              <span class="bar__meta"><b>LabelAll</b><span>1</span></span>
+              <span class="bar__track"><span class="bar__fill" style="width:0.5%"></span></span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= ticker ======================= -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker__track">
+      <span class="ticker__item">MCP</span>
+      <span class="ticker__item">Live2D</span>
+      <span class="ticker__item">VRM</span>
+      <span class="ticker__item">ComfyUI</span>
+      <span class="ticker__item">GraphRAG</span>
+      <span class="ticker__item">TTS · ASR</span>
+      <span class="ticker__item">Tauri</span>
+      <span class="ticker__item">Rust</span>
+      <span class="ticker__item">Vue 3</span>
+      <span class="ticker__item">Cloudflare Workers</span>
+      <span class="ticker__item">Ollama</span>
+      <span class="ticker__item">GPT-SoVITS</span>
+      <span class="ticker__item">GOT-OCR2.0</span>
+      <span class="ticker__item">Whisper</span>
+      <span class="ticker__item">Home Assistant</span>
+      <span class="ticker__item">Docker</span>
+      <span class="ticker__item">Open Source</span>
+    </div>
+  </div>
+
+  <!-- ======================= projects ======================= -->
+  <section class="section" id="projects">
+    <div class="shell">
+      <div class="section__head">
+        <div>
+          <p class="eyebrow" data-i18n="projects.eyebrow">精选作品</p>
+          <h2 class="section__title" data-i18n="projects.title">开源项目</h2>
+        </div>
+        <p class="section__desc" data-i18n="projects.desc">四个从真实需求出发打造的产品：桌面端、云端、移动端，以及一条 Docker 命令就能跑起来的自托管服务。</p>
+      </div>
+
+      <div class="projects__grid" id="project-grid"></div>
+
+      <noscript>
+        <ul class="noscript-list">
+          <li><a href="/projects/super-agent-party/"><b>Super Agent Party</b> — 全能 AI 伴侣，自托管的 Neuro-sama + OpenClaw · 2,712 ★</a></li>
+          <li><a href="/projects/comfyui-llm-party/"><b>ComfyUI LLM Party</b> — ComfyUI 里的 LLM Agent 工作流框架 · 2,370 ★</a></li>
+          <li><a href="/projects/exameow/"><b>Exameow</b> — 上传资料，几秒生成一整套试卷 · 55 ★</a></li>
+          <li><a href="/projects/labelall/"><b>LabelAll</b> — 打开文件夹就能标注图像数据集 · 1 ★</a></li>
+        </ul>
+      </noscript>
+    </div>
+  </section>
+
+  <!-- ======================= ecosystem ======================= -->
+  <section class="section" id="ecosystem">
+    <div class="shell">
+      <div class="section__head">
+        <div>
+          <p class="eyebrow" data-i18n="eco.eyebrow">生态</p>
+          <h2 class="section__title" data-i18n="eco.title">30 个仓库，一个生态</h2>
+        </div>
+        <p class="section__desc" data-i18n="eco.desc">围绕 Super Agent Party 与 ComfyUI LLM Party，生长出插件、扩展、教程与周边工具。</p>
+      </div>
+
+      <div class="eco__grid" id="eco-grid"></div>
+
+      <div class="eco__more">
+        <a class="btn btn--ghost" href="https://github.com/heshengtao?tab=repositories" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.53 2.87 8.37 6.84 9.73.5.1.68-.22.68-.49v-1.7c-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.91-.64.07-.63.07-.63 1 .07 1.53 1.06 1.53 1.06.9 1.57 2.36 1.12 2.93.85.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.06 0-1.12.39-2.03 1.03-2.75-.11-.26-.45-1.3.1-2.71 0 0 .84-.28 2.75 1.05a9.35 9.35 0 015 0c1.9-1.33 2.74-1.05 2.74-1.05.55 1.41.2 2.45.1 2.71.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.06 10.06 0 0022 12.25C22 6.58 17.52 2 12 2z"/></svg>
+          <span data-i18n="eco.more">在 GitHub 查看全部仓库</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= about ======================= -->
+  <section class="section" id="about">
+    <div class="shell">
+      <div class="section__head">
+        <div>
+          <p class="eyebrow" data-i18n="about.eyebrow">关于</p>
+          <h2 class="section__title" data-i18n="about.title">关于我</h2>
+        </div>
+      </div>
+
+      <div class="about__grid">
+        <div class="about__bio reveal">
+          <p data-i18n-html="about.p1">我是 <strong>heshengtao</strong>，一名热爱开源的工程师。我相信 AI 不该被锁在某个云端账号里 —— 它应该可以被下载、被修改、被自托管，被真正地拥有。</p>
+          <p data-i18n-html="about.p2">我的项目大多围绕「让个人也能跑起完整的 AI 能力」展开：给模型一个身体和声音，给工作流一张画布，给老师和学生一个不用联网的出题工具。所有代码都以 AGPL 或 Apache 许可开源。</p>
+        </div>
+        <div class="stack reveal" style="--d:100ms">
+          <div class="hud hud--ticks stack__group">
+            <div class="stack__label" data-i18n="about.stack">技术栈</div>
+            <div class="chips">
+              <span class="chip chip--cy">Vue 3</span>
+              <span class="chip chip--cy">TypeScript</span>
+              <span class="chip chip--vi">Rust</span>
+              <span class="chip chip--vi">Python</span>
+              <span class="chip">Tauri</span>
+              <span class="chip">Node.js</span>
+              <span class="chip">Axum</span>
+              <span class="chip">Cloudflare Workers</span>
+              <span class="chip">Docker</span>
+              <span class="chip">ComfyUI</span>
+              <span class="chip">MCP</span>
+              <span class="chip">WebGL</span>
+            </div>
+          </div>
+          <div class="hud hud--ticks stack__group">
+            <div class="stack__label" data-i18n="about.links">链接</div>
+            <div class="link-row">
+              <a href="https://github.com/heshengtao" target="_blank" rel="noopener noreferrer">
+                <span>GitHub · @heshengtao</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-8.5 8.5M18 14.5V19a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h4.5"/></svg>
+              </a>
+              <a href="https://www.agentparty.top" target="_blank" rel="noopener noreferrer">
+                <span>Super Agent Party</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-8.5 8.5M18 14.5V19a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h4.5"/></svg>
+              </a>
+              <a href="https://exam.superagentparty.com/" target="_blank" rel="noopener noreferrer">
+                <span>Exameow</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-8.5 8.5M18 14.5V19a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h4.5"/></svg>
+              </a>
+              <a href="https://labelall.superagentparty.com/" target="_blank" rel="noopener noreferrer">
+                <span>LabelAll</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-8.5 8.5M18 14.5V19a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h4.5"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="shell footer__grid">
+    <div class="footer__note">
+      <div class="brand__text" style="margin-bottom:10px">heshengtao</div>
+      <span data-i18n="footer.built">原生 HTML / CSS / WebGL 手写 · 零构建依赖</span><br>
+      <span data-i18n="footer.rights">© 2026 heshengtao · MIT License</span>
+    </div>
+    <nav class="footer__links" aria-label="Footer">
+      <a href="#projects" data-i18n="footer.projects">项目</a>
+      <a href="#ecosystem" data-i18n="nav.ecosystem">生态</a>
+      <a href="https://github.com/heshengtao" target="_blank" rel="noopener noreferrer" data-i18n="footer.github">GitHub</a>
+      <a href="https://exam.superagentparty.com/" target="_blank" rel="noopener noreferrer">Exameow</a>
+      <a href="https://labelall.superagentparty.com/" target="_blank" rel="noopener noreferrer">LabelAll</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="/js/data.js?v=1" defer></script>
+<script src="/js/i18n.js?v=1" defer></script>
+<script src="/js/starfield.js?v=1" defer></script>
+<script src="/js/app.js?v=1" defer></script>
+</body>
+</html>
