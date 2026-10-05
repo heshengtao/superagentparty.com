@@ -67,6 +67,50 @@ test("small satellites use slender forests without buildings", () => {
   assert.ok(!materials.some((name) => name.startsWith("building")));
 });
 
+test("trees use layered canopies with restrained trunks", () => {
+  const world = makePlanet(getProject("super-agent-party"), 3.05, 5, {
+    ground: 0x9fae86,
+    rock: 0xd2ccb2,
+  });
+  const names = new Set();
+  const canopyMeshes = [];
+  world.traverse((object) => {
+    if (!object.isMesh) return;
+    names.add(object.material.name);
+    if (["tree", "tree-light", "tree-shadow"].includes(object.material.name)) {
+      canopyMeshes.push(object);
+    }
+  });
+  assert.ok(names.has("tree-bark"), "trees have no bark material");
+  assert.ok(names.has("tree"), "trees have no main canopy material");
+  assert.ok(names.has("tree-light"), "trees have no highlight canopy material");
+  assert.ok(names.has("tree-shadow"), "trees have no shadow canopy material");
+  assert.ok(canopyMeshes.length >= 3, "tree canopies were not batched");
+});
+
+test("larger main worlds receive denser cloud cover", () => {
+  const worlds = [
+    makePlanet(getProject("super-agent-party"), 3.05, 5, {
+      ground: 0x9fae86,
+      rock: 0xd2ccb2,
+    }),
+    makePlanet(getProject("comfyui-llm-party"), 2.35, 19, {
+      ground: 0x8aaba1,
+      rock: 0xbbc6b5,
+    }),
+  ];
+  const cloudVertexCounts = worlds.map((world) => {
+    let count = 0;
+    world.traverse((object) => {
+      if (object.isMesh && object.material.name === "cloud") {
+        count = object.geometry.getAttribute("position").count;
+      }
+    });
+    return count;
+  });
+  assert.ok(cloudVertexCounts[0] > cloudVertexCounts[1]);
+});
+
 test("all placed geometry has finite coordinates", () => {
   const world = makePlanet(getProject("comfyui-llm-party"), 2.35, 19, {
     ground: 0x8aaba1,

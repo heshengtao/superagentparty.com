@@ -20,6 +20,8 @@ const paints = {
   windowLight: material("window-light", 0xa7d0cb),
   tree: material("tree", 0x4d8665),
   treeLight: material("tree-light", 0x80a47a),
+  treeShadow: material("tree-shadow", 0x416c58),
+  bark: material("tree-bark", 0x766f61),
   trunk: material("trunk", 0x797667),
   stone: material("stone", 0xc9c9b0),
   ink: material("ink", ink),
@@ -31,6 +33,7 @@ const box = new THREE.BoxGeometry(1, 1, 1);
 const cylinder = new THREE.CylinderGeometry(1, 1, 1, 6);
 const octagon = new THREE.CylinderGeometry(1, 1, 1, 8);
 const cone = new THREE.ConeGeometry(1, 1, 6);
+const treeTrunk = new THREE.CylinderGeometry(0.65, 1, 1, 5);
 const boulder = new THREE.IcosahedronGeometry(1, 0);
 const disk = new THREE.CircleGeometry(1, 16);
 disk.rotateX(-Math.PI / 2);
@@ -322,22 +325,48 @@ function makeTree(buckets, normal, radius, random) {
   const size = Math.min(1, radius / 1.4);
   base.multiply(new THREE.Matrix4().makeScale(size, size, size));
   const height = 0.72 + random() * 0.25;
+  const variety = random();
   fragment(
     buckets,
-    cylinder,
-    paints.trunk,
+    treeTrunk,
+    paints.bark,
     base,
-    [0, height * 0.48, 0],
-    [0.034, height * 0.96, 0.034],
+    [0, height * 0.38, 0],
+    [0.048, height * 0.8, 0.048],
   );
-  fragment(
-    buckets,
-    cone,
-    random() > 0.35 ? paints.tree : paints.treeLight,
-    base,
-    [0, height * 0.8, 0],
-    [0.13, height * 0.72, 0.13],
-  );
+  if (variety < 0.72) {
+    // Overlapping, wide skirts give the pines a stepped low-poly silhouette.
+    for (const [y, width, tierHeight, paint] of [
+      [0.51, 0.29, 0.48, paints.treeShadow],
+      [0.74, 0.23, 0.43, paints.tree],
+      [0.96, 0.16, 0.42, paints.treeLight],
+    ]) {
+      fragment(
+        buckets,
+        cone,
+        paint,
+        base,
+        [0, height * y, 0],
+        [width * height, height * tierHeight, width * height],
+      );
+    }
+  } else {
+    // Asymmetric faceted clumps echo the reference's rounded broadleaf trees.
+    for (const [x, y, z, width, paint] of [
+      [-0.13, 0.78, 0.02, 0.24, paints.tree],
+      [0.13, 0.85, -0.02, 0.26, paints.treeLight],
+      [-0.01, 1.0, 0.04, 0.25, paints.treeLight],
+    ]) {
+      fragment(
+        buckets,
+        boulder,
+        paint,
+        base,
+        [x * height, y * height, z * height],
+        [width * height, width * height * 0.9, width * height],
+      );
+    }
+  }
 }
 
 function makeForest(buckets, normal, radius, random, count) {
@@ -350,7 +379,8 @@ function makeForest(buckets, normal, radius, random, count) {
   const north = new THREE.Vector3().crossVectors(normal, east).normalize();
   for (let i = 0; i < count; i++) {
     const angle = i * 2.4 + random() * 0.3;
-    const spread = i === 0 ? 0 : 0.12 + random() * 0.1;
+    const spread =
+      i === 0 ? 0 : (0.32 + random() * 0.13) * Math.min(1, radius / 1.4);
     const treeNormal = normal
       .clone()
       .addScaledVector(east, (Math.cos(angle) * spread) / radius)
@@ -491,16 +521,52 @@ function makeUtilityPole(buckets, normal, radius, yaw) {
 }
 
 function makeSurfaceCloud(buckets, normal, radius, random) {
-  const base = tangentMatrix(normal, radius, random() * 6.28, 0.38);
-  for (let i = 0; i < 4; i++) {
-    const x = (i - 1.5) * 0.28;
+  const base = tangentMatrix(
+    normal,
+    radius,
+    random() * 6.28,
+    0.46 + random() * 0.08,
+  );
+  const cloudScale = 0.72 + random() * 0.62;
+  const forms = [
+    [
+      [-0.42, 0, 0],
+      [-0.14, 0.04, 0.03],
+      [0.18, 0.01, -0.03],
+      [0.42, 0, 0],
+    ],
+    [
+      [-0.24, 0, 0],
+      [0, 0.02, 0.18],
+      [0.24, 0, 0],
+      [0, 0.09, -0.12],
+    ],
+    [
+      [-0.2, 0, 0],
+      [0, 0.12, 0.03],
+      [0.2, 0, 0],
+      [0, 0.03, -0.2],
+      [0, 0.04, 0.2],
+    ],
+  ];
+  const form = forms[Math.floor(random() * forms.length)];
+  for (let i = 0; i < form.length; i++) {
+    const [x, y, z] = form[i];
     fragment(
       buckets,
       boulder,
       paints.cloud,
       base,
-      [x, 0.06 + (i % 2) * 0.06, Math.sin(i * 2.2) * 0.07],
-      [0.29 + random() * 0.13, 0.16 + random() * 0.07, 0.24],
+      [
+        x * cloudScale,
+        0.06 + y * cloudScale + random() * 0.025,
+        z * cloudScale,
+      ],
+      [
+        (0.23 + random() * 0.14) * cloudScale,
+        (0.14 + random() * 0.09) * cloudScale,
+        (0.2 + random() * 0.1) * cloudScale,
+      ],
     );
   }
 }
@@ -619,8 +685,14 @@ export function makePlanet(project, radius, seed, palette) {
         random() * Math.PI,
       );
     }
-    for (let i = 0; i < 6; i++) {
-      makeSurfaceCloud(buckets, direction(i, 6, seed + 0.6), radius, random);
+    const cloudCount = Math.max(4, Math.round(radius * 3));
+    for (let i = 0; i < cloudCount; i++) {
+      makeSurfaceCloud(
+        buckets,
+        direction(i, cloudCount, seed + 0.6),
+        radius,
+        random,
+      );
     }
   } else {
     for (let i = 0; i < (radius < 1 ? 4 : 7); i++) {

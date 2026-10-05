@@ -387,13 +387,13 @@ svg.lucide {
   background: #fcf1d3;
 }
 .planet-label.is-satellite::before {
-  width: 9px;
-  height: 9px;
-  background: #cf7860;
+  display: none;
+}
+.planet-label.is-satellite span {
+  left: 0;
 }
 .planet-label.is-satellite span {
   position: absolute;
-  left: 18px;
   visibility: hidden;
   opacity: 0;
 }

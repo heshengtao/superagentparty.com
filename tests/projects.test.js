@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { projects, getProject, getChildren } from "../src/projects.js";
 
 test("every named repository has a unique navigable record", () => {
@@ -42,4 +43,15 @@ test("each main world has detail content and direct navigation", () => {
   }
   assert.equal(getProject("missing"), undefined);
   assert.deepEqual(getChildren("missing"), []);
+});
+
+test("satellite markers do not use the red accent dot", () => {
+  const styles = readFileSync(
+    new URL("../src/styles.css", import.meta.url),
+    "utf8",
+  );
+  const satelliteRule =
+    styles.match(/\.planet-label\.is-satellite::before\s*\{([^}]*)\}/)?.[1] ||
+    "";
+  assert.match(satelliteRule, /display:\s*none/);
 });
