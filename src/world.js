@@ -45,6 +45,7 @@ const layouts = {
 };
 
 const mobileQuery = window.matchMedia("(max-width: 700px)");
+const spread = 1.18;
 
 function makeOrbit(center, radius, color) {
   const points = [];
@@ -80,7 +81,7 @@ export function createWorld(canvas, { onSelect, onFrame }) {
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x83bdb9);
-  scene.fog = new THREE.Fog(0x83bdb9, 32, 58);
+  scene.fog = new THREE.Fog(0x83bdb9, 32 * spread, 58 * spread);
   scene.add(new THREE.HemisphereLight(0xfaf6df, 0x6f8e86, 2.05));
   const sun = new THREE.DirectionalLight(0xfff3d5, 2.0);
   sun.position.set(-7, 13, 15);
@@ -89,9 +90,9 @@ export function createWorld(canvas, { onSelect, onFrame }) {
   fill.position.set(10, -4, -8);
   scene.add(fill);
 
-  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 110);
   const target = new THREE.Vector3(
-    mobileQuery.matches ? 0 : 1.1,
+    mobileQuery.matches ? 0 : 1.1 * spread,
     mobileQuery.matches ? (window.innerHeight < 700 ? 4 : 2.1) : 0,
     0,
   );
@@ -107,24 +108,28 @@ export function createWorld(canvas, { onSelect, onFrame }) {
       rock: layout.rock || 0xcdcdb5,
     };
     const planet = makePlanet(project, layout.radius, layout.seed, palette);
-    planet.position.set(...layout.at);
+    planet.position.set(...layout.at.map((value) => value * spread));
     scene.add(planet);
     planets.set(project.id, planet);
     planet.traverse((object) => {
       if (object.isMesh) planetMeshes.push(object);
     });
   }
-  const orbitSap = makeOrbit([0, 0, 0], 4.9, 0xe7f0db);
-  const orbitComfy = makeOrbit([8.4, 1, -2.1], 4.15, 0xe7f0db);
+  const orbitSap = makeOrbit([0, 0, 0], 4.9 * spread, 0xe7f0db);
+  const orbitComfy = makeOrbit(
+    [8.4 * spread, 1 * spread, -2.1 * spread],
+    4.15 * spread,
+    0xe7f0db,
+  );
   scene.add(orbitSap, orbitComfy);
   const dustMaterial = new THREE.MeshBasicMaterial({ color: 0xe2ecdc });
   const dustGeometry = new THREE.IcosahedronGeometry(0.04, 0);
   for (let i = 0; i < 64; i++) {
     const sparkle = new THREE.Mesh(dustGeometry, dustMaterial);
     sparkle.position.set(
-      Math.sin(i * 17.11) * 18,
-      Math.cos(i * 13.61) * 10,
-      -7 - (i % 7),
+      Math.sin(i * 17.11) * 18 * spread,
+      Math.cos(i * 13.61) * 10 * spread,
+      (-7 - (i % 7)) * spread,
     );
     sparkle.scale.setScalar(0.4 + (i % 4) * 0.4);
     scene.add(sparkle);
@@ -134,7 +139,7 @@ export function createWorld(canvas, { onSelect, onFrame }) {
   let motion = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let yaw = 0;
   let pitch = 0.18;
-  let desiredDistance = mobileQuery.matches ? 20.5 : 23.5;
+  let desiredDistance = mobileQuery.matches ? 20.5 * spread : 23.5 * spread;
   let distance = desiredDistance;
   let pointerDown = null;
   const raycaster = new THREE.Raycaster();
@@ -163,11 +168,11 @@ export function createWorld(canvas, { onSelect, onFrame }) {
             (mobileQuery.matches ? 5 : 2.6),
         )
       : mobileQuery.matches
-        ? 20.5
-        : 23.5;
+        ? 20.5 * spread
+        : 23.5 * spread;
     desiredTarget.copy(
       planet?.position ||
-        new THREE.Vector3(mobileQuery.matches ? 0 : 1.1, 0, 0),
+        new THREE.Vector3(mobileQuery.matches ? 0 : 1.1 * spread, 0, 0),
     );
     if (mobileQuery.matches)
       desiredTarget.y += selectedId
@@ -241,7 +246,7 @@ export function createWorld(canvas, { onSelect, onFrame }) {
     desiredDistance = THREE.MathUtils.clamp(
       desiredDistance + event.deltaY * 0.013,
       4.5,
-      35,
+      35 * spread,
     );
   }
 

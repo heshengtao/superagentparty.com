@@ -39,6 +39,15 @@ const disk = new THREE.CircleGeometry(1, 16);
 disk.rotateX(-Math.PI / 2);
 const up = new THREE.Vector3(0, 1, 0);
 const identity = new THREE.Matrix4();
+const referenceRadius = 1.6;
+
+function surfaceScale(radius) {
+  return radius / referenceRadius;
+}
+
+function scaleMatrix(scale) {
+  return new THREE.Matrix4().makeScale(scale, scale, scale);
+}
 
 function seeded(seed) {
   let value = seed >>> 0;
@@ -149,6 +158,7 @@ function makeTerrain(radius, palette, globe) {
 }
 
 function makeRoad(buckets, radius, offset, phase, meridian = false) {
+  const detail = surfaceScale(radius);
   const positions = [];
   const indices = [];
   const steps = 92;
@@ -179,9 +189,9 @@ function makeRoad(buckets, radius, offset, phase, meridian = false) {
     for (const side of [-1, 1]) {
       const edge = normal
         .clone()
-        .addScaledVector(across, side * (meridian ? 0.055 : 0.075))
+        .addScaledVector(across, side * (meridian ? 0.055 : 0.075) * detail)
         .normalize();
-      const point = surfacePoint(edge, radius, 0.025);
+      const point = surfacePoint(edge, radius, 0.025 * detail);
       positions.push(point.x, point.y, point.z);
     }
     if (i < steps) {
@@ -200,9 +210,15 @@ function makeRoad(buckets, radius, offset, phase, meridian = false) {
 }
 
 function makeBuilding(buckets, globe, normal, radius, random, index) {
-  const base = tangentMatrix(normal, radius, random() * Math.PI * 2, 0.016);
-  const size = Math.min(1, radius / 2.7);
-  base.multiply(new THREE.Matrix4().makeScale(size, size, size));
+  const detail = surfaceScale(radius);
+  const base = tangentMatrix(
+    normal,
+    radius,
+    random() * Math.PI * 2,
+    0.016 * detail,
+  );
+  const size = radius / 2.7;
+  base.multiply(scaleMatrix(size));
   const type = index % 4;
   const width = [0.57, 0.83, 1.08, 0.62][type] + random() * 0.12;
   const depth = [0.54, 0.61, 0.78, 0.62][type] + random() * 0.08;
@@ -321,9 +337,10 @@ function makeBuilding(buckets, globe, normal, radius, random, index) {
 }
 
 function makeTree(buckets, normal, radius, random) {
-  const base = tangentMatrix(normal, radius, random() * 6.28, 0.015);
-  const size = Math.min(1, radius / 1.4);
-  base.multiply(new THREE.Matrix4().makeScale(size, size, size));
+  const detail = surfaceScale(radius);
+  const base = tangentMatrix(normal, radius, random() * 6.28, 0.015 * detail);
+  const size = detail;
+  base.multiply(scaleMatrix(size));
   const height = 0.72 + random() * 0.25;
   const variety = random();
   fragment(
@@ -370,6 +387,7 @@ function makeTree(buckets, normal, radius, random) {
 }
 
 function makeForest(buckets, normal, radius, random, count) {
+  const detail = surfaceScale(radius);
   const east = new THREE.Vector3()
     .crossVectors(
       Math.abs(normal.y) > 0.9 ? new THREE.Vector3(1, 0, 0) : up,
@@ -379,8 +397,7 @@ function makeForest(buckets, normal, radius, random, count) {
   const north = new THREE.Vector3().crossVectors(normal, east).normalize();
   for (let i = 0; i < count; i++) {
     const angle = i * 2.4 + random() * 0.3;
-    const spread =
-      i === 0 ? 0 : (0.32 + random() * 0.13) * Math.min(1, radius / 1.4);
+    const spread = i === 0 ? 0 : (0.32 + random() * 0.13) * detail;
     const treeNormal = normal
       .clone()
       .addScaledVector(east, (Math.cos(angle) * spread) / radius)
@@ -391,7 +408,9 @@ function makeForest(buckets, normal, radius, random, count) {
 }
 
 function makeTower(buckets, normal, radius, index) {
-  const base = tangentMatrix(normal, radius, index * 1.7, 0.025);
+  const detail = surfaceScale(radius);
+  const base = tangentMatrix(normal, radius, index * 1.7, 0.025 * detail);
+  base.multiply(scaleMatrix(detail));
   fragment(
     buckets,
     octagon,
@@ -463,7 +482,9 @@ function makeBeam(buckets, base, start, end, width) {
 }
 
 function makeTransmissionTower(buckets, normal, radius, yaw) {
-  const base = tangentMatrix(normal, radius, yaw, 0.02);
+  const detail = surfaceScale(radius);
+  const base = tangentMatrix(normal, radius, yaw, 0.02 * detail);
+  base.multiply(scaleMatrix(detail));
   for (const x of [-1, 1]) {
     for (const z of [-1, 1]) {
       makeBeam(
@@ -498,7 +519,9 @@ function makeTransmissionTower(buckets, normal, radius, yaw) {
 }
 
 function makeUtilityPole(buckets, normal, radius, yaw) {
-  const base = tangentMatrix(normal, radius, yaw, 0.015);
+  const detail = surfaceScale(radius);
+  const base = tangentMatrix(normal, radius, yaw, 0.015 * detail);
+  base.multiply(scaleMatrix(detail));
   fragment(
     buckets,
     cylinder,
@@ -521,12 +544,14 @@ function makeUtilityPole(buckets, normal, radius, yaw) {
 }
 
 function makeSurfaceCloud(buckets, normal, radius, random) {
+  const detail = surfaceScale(radius);
   const base = tangentMatrix(
     normal,
     radius,
     random() * 6.28,
-    0.46 + random() * 0.08,
+    (0.46 + random() * 0.08) * detail,
   );
+  base.multiply(scaleMatrix(detail));
   const cloudScale = 0.72 + random() * 0.62;
   const forms = [
     [
@@ -592,6 +617,7 @@ export function makePlanet(project, radius, seed, palette) {
   makeTerrain(radius, palette, globe);
   const buckets = new Map();
   const main = project.kind === "main";
+  const detail = surfaceScale(radius);
   if (main) {
     for (const [offset, phase] of [
       [-0.43, 0.8],
@@ -603,7 +629,8 @@ export function makePlanet(project, radius, seed, palette) {
     makeRoad(buckets, radius, 0, 0.7, true);
     for (let i = 0; i < 2; i++) {
       const normal = direction(i * 11 + 5, 24, seed + 0.4);
-      const base = tangentMatrix(normal, radius, i, 0.027);
+      const base = tangentMatrix(normal, radius, i, 0.027 * detail);
+      base.multiply(scaleMatrix(detail));
       fragment(
         buckets,
         disk,
@@ -616,7 +643,8 @@ export function makePlanet(project, radius, seed, palette) {
     }
     for (let i = 0; i < 2; i++) {
       const normal = direction(i * 13 + 6, 26, seed + 1.2);
-      const base = tangentMatrix(normal, radius, i * 2.1, 0.031);
+      const base = tangentMatrix(normal, radius, i * 2.1, 0.031 * detail);
+      base.multiply(scaleMatrix(detail));
       fragment(
         buckets,
         disk,
@@ -645,7 +673,13 @@ export function makePlanet(project, radius, seed, palette) {
     }
     for (let i = 0; i < 16; i++) {
       const normal = direction(i, 16, seed + 1.7);
-      const base = tangentMatrix(normal, radius, random() * 6.28, -0.03);
+      const base = tangentMatrix(
+        normal,
+        radius,
+        random() * 6.28,
+        -0.03 * detail,
+      );
+      base.multiply(scaleMatrix(detail));
       fragment(
         buckets,
         boulder,
