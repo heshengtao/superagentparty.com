@@ -1,0 +1,23 @@
+{
+  "name": "heshengtao-planet-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "node --test",
+    "test:browser": "node scripts/browser-smoke.mjs"
+  },
+  "dependencies": {
+    "lucide": "^1.52.0",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0",
+    "pngjs": "^7.0.0",
+    "prettier": "^3.9.9",
+    "vite": "^7.1.9"
+  }
+}

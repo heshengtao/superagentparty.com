@@ -5,3 +5,6 @@ node_modules/
 .wrangler/
 .vscode/
 .idea/
+.agents/
+skills-lock.json
+dist/
