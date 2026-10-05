@@ -51,9 +51,8 @@ const copy = {
     allRepos: "在 GitHub 查看全部仓库",
     aboutKicker: "THE MAKER / 02",
     aboutTitle: "关于 heshengtao",
-    aboutLead: "我相信 AI 应该可以被下载、修改、自托管，被真正地拥有。",
-    aboutBody:
-      "我的项目围绕一个想法展开：让个人也能运行完整的 AI 能力。给模型一个身体和声音，给工作流一张画布，给学习者一个不依赖云端的工具。",
+    aboutLead: "一个普通的社畜，希望能做做开源项目帮到大家！",
+    aboutBody: "",
     fallbackTitle: "星图暂时无法显示",
     fallbackCopy: "你仍然可以从星球目录访问所有项目。",
     mainGroup: "主要项目",
@@ -93,9 +92,8 @@ const copy = {
     aboutKicker: "THE MAKER / 02",
     aboutTitle: "About heshengtao",
     aboutLead:
-      "I believe AI should be downloadable, modifiable, self-hostable and truly yours.",
-    aboutBody:
-      "My projects follow one idea: an individual should be able to run the full stack of AI. Give a model a body and voice, give workflows a canvas, and give learners tools that do not depend on the cloud.",
+      "Just an everyday worker hoping to build open-source projects that help everyone!",
+    aboutBody: "",
     fallbackTitle: "The star map is unavailable",
     fallbackCopy: "You can still visit every project through the field guide.",
     mainGroup: "FLAGSHIP WORLDS",

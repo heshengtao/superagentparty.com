@@ -290,9 +290,11 @@ export function createWorld(canvas, { onSelect, onFrame }) {
     target.lerp(desiredTarget, easing);
     distance = THREE.MathUtils.lerp(distance, desiredDistance, easing);
     if (motion && !document.hidden) {
-      for (const [id, planet] of planets)
+      for (const [id, planet] of planets) {
         planet.userData.globe.rotation.y +=
           delta * (id === selectedId ? 0.11 : 0.045);
+        planet.userData.update?.(delta);
+      }
     }
     const cos = Math.cos(pitch);
     camera.position.set(
