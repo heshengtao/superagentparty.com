@@ -35,19 +35,19 @@ const copy = {
     heroFirst: "把想法",
     heroSecond: "变成星球。",
     heroCopy:
-      "从能听会说的 AI 伙伴，到可自由组合的智能体工作流。每个开源项目，都是一片持续生长的小小世界。",
+      "从能听会说的 AI 伙伴，到能一起剪片、写歌的创作工作台。每个开源项目，都是一片持续生长的小小世界。",
     repos: "开源仓库",
     stars: "累计星标",
     explore: "探索星球",
     coordinate: "个人作品集 / 持续生长中",
     overview: "全景",
-    visibleCount: "15 颗已发现星球",
+    visibleCount: "17 颗已发现星球",
     source: "查看源码",
     demo: "在线体验",
     mapKicker: "FIELD GUIDE / 01",
     directoryTitle: "星球目录",
     directoryIntro:
-      "探索已命名的 15 个开源仓库。围绕主星的小星球，是它们不断生长的生态。",
+      "探索已命名的 17 个开源仓库。围绕主星的小星球，是它们不断生长的生态。",
     allRepos: "在 GitHub 查看全部仓库",
     aboutKicker: "THE MAKER / 02",
     aboutTitle: "关于 heshengtao",
@@ -75,19 +75,19 @@ const copy = {
     heroFirst: "Ideas grow",
     heroSecond: "into worlds.",
     heroCopy:
-      "From an AI companion with a voice and a body to freely connected agent workflows. Every open-source project is a small world still growing.",
+      "From an AI companion with a voice and a body to creative workstations that cut video and write songs with you. Every open-source project is a small world still growing.",
     repos: "repositories",
     stars: "total stars",
     explore: "Explore worlds",
     coordinate: "PERSONAL PORTFOLIO / STILL GROWING",
     overview: "Overview",
-    visibleCount: "15 discovered worlds",
+    visibleCount: "17 discovered worlds",
     source: "View source",
     demo: "Live demo",
     mapKicker: "FIELD GUIDE / 01",
     directoryTitle: "Field guide",
     directoryIntro:
-      "Explore 15 named open-source repositories. The smaller worlds orbiting a flagship are part of its growing ecosystem.",
+      "Explore 17 named open-source repositories. The smaller worlds orbiting a flagship are part of its growing ecosystem.",
     allRepos: "See all repositories on GitHub",
     aboutKicker: "THE MAKER / 02",
     aboutTitle: "About heshengtao",
@@ -262,14 +262,8 @@ function updateDirectory() {
       button.type = "button";
       const swatch = element("span", "planet-swatch");
       swatch.style.background =
-        project.id === "exameow"
-          ? "#c1b18f"
-          : project.id === "labelall"
-            ? "#8ba9a0"
-            : project.parent === "comfyui-llm-party" ||
-                project.id === "comfyui-llm-party"
-              ? "#8aaba1"
-              : "#9fae86";
+        project.accent ??
+        (project.parent === "comfyui-llm-party" ? "#8aaba1" : "#9fae86");
       const label = element("span", "item-copy");
       label.append(
         element("strong", "", project.name),

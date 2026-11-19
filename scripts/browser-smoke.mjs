@@ -56,7 +56,7 @@ try {
       `${config.name}: WebGL fallback shown`,
     );
     assert.deepEqual(errors, [], `${config.name}: JS exceptions`);
-    assert.equal(await page.locator(".planet-label").count(), 15);
+    assert.equal(await page.locator(".planet-label").count(), 17);
     const screenshot = await page.screenshot({
       path: `/tmp/planet-${config.name}.png`,
     });
@@ -88,7 +88,7 @@ try {
     );
 
     await page.locator("#directory-button").click();
-    assert.equal(await page.locator(".directory-item").count(), 15);
+    assert.equal(await page.locator(".directory-item").count(), 17);
     assert.equal(await page.locator('.directory-item:has-text("topics-after-party")').count(), 0);
     await page.locator(".directory-item").first().click();
     assert.equal(
@@ -144,7 +144,7 @@ try {
       `${config.name}: dragging had no visible effect`,
     );
     console.log(
-      `${config.name}: scene colors=${colorVariety(screenshot)}, directory=15, detail/language/about/drag passed`,
+      `${config.name}: scene colors=${colorVariety(screenshot)}, directory=17, detail/language/about/drag passed`,
     );
     await page.close();
   }
@@ -191,7 +191,7 @@ try {
   });
   assert.equal(await fallbackPage.locator("#webgl-fallback").isVisible(), true);
   await fallbackPage.locator("#fallback-directory").click();
-  assert.equal(await fallbackPage.locator(".directory-item").count(), 15);
+  assert.equal(await fallbackPage.locator(".directory-item").count(), 17);
   console.log("WebGL fallback: directory remains usable");
   await fallbackPage.close();
   const reducedPage = await browser.newPage({ reducedMotion: "reduce" });

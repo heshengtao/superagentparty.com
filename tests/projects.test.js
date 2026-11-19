@@ -4,8 +4,8 @@ import { readFileSync } from "node:fs";
 import { projects, getProject, getChildren } from "../src/projects.js";
 
 test("every named repository has a unique navigable record", () => {
-  assert.equal(projects.length, 15);
-  assert.equal(new Set(projects.map((project) => project.id)).size, 15);
+  assert.equal(projects.length, 17);
+  assert.equal(new Set(projects.map((project) => project.id)).size, 17);
   for (const project of projects) {
     assert.match(project.source, /^https:\/\/github\.com\/heshengtao\//);
     assert.ok(project.name);
@@ -33,16 +33,34 @@ test("each main world has detail content and direct navigation", () => {
     "comfyui-llm-party",
     "exameow",
     "labelall",
+    "ai-cut",
+    "ai-daw",
   ]) {
     const project = getProject(id);
     assert.equal(project.kind, "main");
     assert.ok(project.stars >= 0);
     assert.match(project.license, /^(AGPL-3\.0|Apache-2\.0)$/);
+    assert.match(project.accent, /^#[0-9a-f]{6}$/);
     assert.ok(project.description.zh.length > project.summary.zh.length);
     assert.ok(project.description.en.length > project.summary.en.length);
   }
   assert.equal(getProject("missing"), undefined);
   assert.deepEqual(getChildren("missing"), []);
+});
+
+test("every world has a scene layout", () => {
+  const world = readFileSync(
+    new URL("../src/world.js", import.meta.url),
+    "utf8",
+  );
+  for (const project of projects) {
+    const key = new RegExp(`(?:"${project.id}"|\\b${project.id})\\s*:\\s*\\{`);
+    assert.match(
+      world,
+      key,
+      `${project.id} is missing a layout in src/world.js`,
+    );
+  }
 });
 
 test("satellite markers do not use the red accent dot", () => {
